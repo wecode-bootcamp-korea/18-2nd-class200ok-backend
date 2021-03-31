@@ -1,3 +1,5 @@
+from datetime import datetime, timedelta
+
 from django.db import models
 
 from user.models import User
@@ -67,6 +69,7 @@ class PendingLecture(models.Model):
     thumbnail_url     = models.CharField(max_length=2000, default='thumbnail')
     summary_image_url = models.CharField(max_length=2000, default='summary_image')
     is_open           = models.BooleanField(default=False)
+    vote_by           = models.DateTimeField(default=datetime.now()+timedelta(days=15))
     created_at        = models.DateTimeField(auto_now_add=True)
     updated_at        = models.DateTimeField(auto_now=True)
     user              = models.ForeignKey(User, on_delete=models.SET_NULL, null=True)
