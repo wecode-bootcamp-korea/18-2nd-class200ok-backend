@@ -20,7 +20,7 @@ class Creator(models.Model):
     phonenumber       = models.CharField(max_length=13, unique=True)
     introduction      = models.CharField(max_length=200)
     profile_image_url = models.CharField(max_length=2000)
-    image_url         = models.CharField(max_length=2000, default='image')
+    image_url         = models.CharField(max_length=2000, null=True)
     user              = models.ForeignKey('User', on_delete=models.SET_NULL, null=True)
     
     class Meta:
