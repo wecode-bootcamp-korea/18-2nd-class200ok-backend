@@ -65,9 +65,9 @@ class LectureHashtag(models.Model):
 
 class PendingLecture(models.Model):
     title             = models.CharField(max_length=45)
-    cover_image_url   = models.CharField(max_length=2000, default='cover_image')
-    thumbnail_url     = models.CharField(max_length=2000, default='thumbnail')
-    summary_image_url = models.CharField(max_length=2000, default='summary_image')
+    cover_image_url   = models.CharField(max_length=2000, null=True)
+    thumbnail_url     = models.CharField(max_length=2000, null=True)
+    summary_image_url = models.CharField(max_length=2000, null=True)
     is_open           = models.BooleanField(default=False)
     vote_by           = models.DateTimeField(default=datetime.now()+timedelta(days=15))
     created_at        = models.DateTimeField(auto_now_add=True)
