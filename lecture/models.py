@@ -25,16 +25,15 @@ class Difficulty(models.Model):
     
     class Meta:
         db_table = 'difficulties'
-        
 
-class Hashtag(models.Model):
-    tag              = models.CharField(max_length=20, unique=True)
-    lectures         = models.ManyToManyField('Lecture', through='LectureHashtag')
-    pending_lectures = models.ManyToManyField('PendingLecture', through='PendingLectureHashtag')
+
+class SummaryTag(models.Model):
+    tag = models.CharField(max_length=30)
+    pending_lecture = models.ForeignKey('PendingLecture', on_delete=models.CASCADE)
     
     class Meta:
-        db_table = 'hashtags'
-        
+        db_table = 'summary_tags'
+
 
 class Lecture(models.Model):
     title         = models.CharField(max_length=50)
@@ -52,23 +51,13 @@ class Lecture(models.Model):
     class Meta:
         db_table        = 'lectures'
         unique_together = ('user', 'title')
-        
 
-class LectureHashtag(models.Model):
-    lecture = models.ForeignKey('Lecture', on_delete=models.SET_NULL, null=True)
-    hashtag = models.ForeignKey('Hashtag', on_delete=models.SET_NULL, null=True)
-    
-    class Meta:
-        db_table = 'lectures_hashtags'
-        unique_together = ('lecture', 'hashtag')
         
-
 class PendingLecture(models.Model):
     title             = models.CharField(max_length=45)
     cover_image_url   = models.CharField(max_length=2000, null=True)
-    thumbnail_url     = models.CharField(max_length=2000, null=True)
     summary_image_url = models.CharField(max_length=2000, null=True)
-    is_open           = models.BooleanField(default=False)
+    hashtag           = models.CharField(max_length=20)
     vote_by           = models.DateTimeField(default=datetime.now()+timedelta(days=15))
     created_at        = models.DateTimeField(auto_now_add=True)
     updated_at        = models.DateTimeField(auto_now=True)
@@ -90,15 +79,6 @@ class Introduction(models.Model):
     class Meta:
         db_table        = 'introductions'
         unique_together = ('detail', 'image_url')
-        
-
-class PendingLectureHashtag(models.Model):
-    pending_lecture = models.ForeignKey('PendingLecture', on_delete=models.SET_NULL, null=True)
-    hashtag         = models.ForeignKey('Hashtag', on_delete=models.SET_NULL, null=True)
-    
-    class Meta:
-        db_table        = 'pending_lectures_hashtags'
-        unique_together = ('pending_lecture', 'hashtag')
 
 
 class Vote(models.Model):
