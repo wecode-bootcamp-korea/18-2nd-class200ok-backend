@@ -55,9 +55,9 @@ class Lecture(models.Model):
         
 class PendingLecture(models.Model):
     title             = models.CharField(max_length=45)
-    cover_image_url   = models.CharField(max_length=2000, null=True)
-    summary_image_url = models.CharField(max_length=2000, null=True)
-    hashtag           = models.CharField(max_length=20)
+    cover_image_url   = models.URLField(max_length=2000, null=True)
+    summary_image_url = models.URLField(max_length=2000, null=True)
+    hashtag           = models.CharField(max_length=20, null=True)
     vote_by           = models.DateTimeField(default=datetime.now()+timedelta(days=15))
     created_at        = models.DateTimeField(auto_now_add=True)
     updated_at        = models.DateTimeField(auto_now=True)
@@ -73,7 +73,7 @@ class PendingLecture(models.Model):
 
 class Introduction(models.Model):
     detail          = models.CharField(max_length=300, null=True)
-    image_url       = models.CharField(max_length=2000)
+    image_url       = models.URLField(max_length=2000)
     pending_lecture = models.ForeignKey('PendingLecture', on_delete=models.SET_NULL, null=True)
     
     class Meta:
