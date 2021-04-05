@@ -27,16 +27,15 @@ class Difficulty(models.Model):
         db_table = 'difficulties'
 
 
-class SummaryTag(models.Model):
+class Hashtag(models.Model):
     tag = models.CharField(max_length=30)
-    pending_lecture = models.ForeignKey('PendingLecture', on_delete=models.CASCADE)
     
     class Meta:
-        db_table = 'summary_tags'
+        db_table = 'hashtags'
 
 
 class Lecture(models.Model):
-    title         = models.CharField(max_length=50)
+    title         = models.CharField(max_length=50, null=True)
     price         = models.DecimalField(max_digits=12, decimal_places=2)
     discount_rate = models.DecimalField(max_digits=4, decimal_places=2, default=0)
     description   = models.TextField(default='HTML')
@@ -55,24 +54,32 @@ class Lecture(models.Model):
         
 class PendingLecture(models.Model):
     title             = models.CharField(max_length=45)
-    cover_image_url   = models.URLField(max_length=2000, null=True)
-    summary_image_url = models.URLField(max_length=2000, null=True)
-    hashtag           = models.CharField(max_length=20, null=True)
+    cover_image_url   = models.CharField(max_length=2000, null=True)
+    summary_image_url = models.CharField(max_length=2000, null=True)
+    detailed_category = models.CharField(max_length=20, null=True)
     created_at        = models.DateTimeField(auto_now_add=True)
     updated_at        = models.DateTimeField(auto_now=True)
     user              = models.ForeignKey(User, on_delete=models.SET_NULL, null=True)
     category          = models.ForeignKey('Category', on_delete=models.SET_NULL, null=True)
     sub_category      = models.ForeignKey('SubCategory', on_delete=models.SET_NULL, null=True)
     difficulty        = models.ForeignKey('Difficulty', on_delete=models.SET_NULL, null=True)
+    hashtags          = models.ManyToManyField('Hashtag', through='PendingLectureHashtag')
     
     class Meta:
         db_table        = 'pending_lectures'
         unique_together = ('user', 'title')
-        
+
+class PendingLectureHashtag(models.Model):
+    pending_lecture = models.ForeignKey('PendingLecture', on_delete=models.SET_NULL, null=True)
+    hashtag         = models.ForeignKey('Hashtag', on_delete=models.SET_NULL, null=True)
+
+    class Meta:
+        db_table = 'pending_lectures_hashtags'
+        unique_together = ('pending_lecture', 'hashtag')
 
 class Introduction(models.Model):
     detail          = models.CharField(max_length=300, null=True)
-    image_url       = models.URLField(max_length=2000)
+    image_url       = models.URLField()
     pending_lecture = models.ForeignKey('PendingLecture', on_delete=models.SET_NULL, null=True)
     
     class Meta:
