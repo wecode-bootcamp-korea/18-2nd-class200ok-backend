@@ -58,7 +58,6 @@ class PendingLecture(models.Model):
     cover_image_url   = models.URLField(max_length=2000, null=True)
     summary_image_url = models.URLField(max_length=2000, null=True)
     hashtag           = models.CharField(max_length=20, null=True)
-    vote_by           = models.DateTimeField(default=datetime.now()+timedelta(days=15))
     created_at        = models.DateTimeField(auto_now_add=True)
     updated_at        = models.DateTimeField(auto_now=True)
     user              = models.ForeignKey(User, on_delete=models.SET_NULL, null=True)
