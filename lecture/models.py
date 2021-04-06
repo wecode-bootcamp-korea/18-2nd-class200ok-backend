@@ -53,7 +53,7 @@ class Lecture(models.Model):
 
         
 class PendingLecture(models.Model):
-    title             = models.CharField(max_length=45)
+    title             = models.CharField(max_length=45, null=True)
     cover_image_url   = models.CharField(max_length=2000, null=True)
     summary_image_url = models.CharField(max_length=2000, null=True)
     detailed_category = models.CharField(max_length=20, null=True)
