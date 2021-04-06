@@ -80,12 +80,11 @@ class PendingLectureHashtag(models.Model):
 class Introduction(models.Model):
     detail          = models.CharField(max_length=250, null=True)
     image_url       = models.CharField(max_length=250)
-
     pending_lecture = models.ForeignKey('PendingLecture', on_delete=models.SET_NULL, null=True)
     
     class Meta:
         db_table        = 'introductions'
-        # unique_together = ('detail', 'image_url')
+        unique_together = ('detail', 'image_url')
 
 
 class Vote(models.Model):
