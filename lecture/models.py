@@ -64,7 +64,7 @@ class PendingLecture(models.Model):
     sub_category      = models.ForeignKey('SubCategory', on_delete=models.SET_NULL, null=True)
     difficulty        = models.ForeignKey('Difficulty', on_delete=models.SET_NULL, null=True)
     hashtags          = models.ManyToManyField('Hashtag', through='PendingLectureHashtag')
-    
+
     class Meta:
         db_table        = 'pending_lectures'
 
