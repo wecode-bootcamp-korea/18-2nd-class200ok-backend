@@ -59,7 +59,7 @@ class PendingLecture(models.Model):
     detailed_category = models.CharField(max_length=20, null=True)
     created_at        = models.DateTimeField(auto_now_add=True)
     updated_at        = models.DateTimeField(auto_now=True)
-    user              = models.ForeignKey(User, on_delete=models.SET_NULL, null=True)
+    user              = models.OneToOneField(User, on_delete=models.SET_NULL, null=True)
     category          = models.ForeignKey('Category', on_delete=models.SET_NULL, null=True)
     sub_category      = models.ForeignKey('SubCategory', on_delete=models.SET_NULL, null=True)
     difficulty        = models.ForeignKey('Difficulty', on_delete=models.SET_NULL, null=True)
@@ -67,7 +67,6 @@ class PendingLecture(models.Model):
     
     class Meta:
         db_table        = 'pending_lectures'
-        unique_together = ('user', 'title')
 
 class PendingLectureHashtag(models.Model):
     pending_lecture = models.ForeignKey('PendingLecture', on_delete=models.SET_NULL, null=True)
