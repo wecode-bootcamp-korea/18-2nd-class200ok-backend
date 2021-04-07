@@ -21,7 +21,7 @@ class KakaoSignInView(View):
         try:
             access_token = request.headers.get('Authorization')
             user_profile = requests.get(
-                'https://kapi.kakao.com//v2/user/me', 
+                'https://kapi.kakao.com/v2/user/me', 
                 headers={'Authorization' : 'Bearer {}'.format(access_token)}
                 )
             json_user_profile = user_profile.json()
