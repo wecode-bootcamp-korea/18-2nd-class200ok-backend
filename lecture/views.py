@@ -15,6 +15,36 @@ from .models     import (
     Vote
 )
 
+class PendingLectureDetailView(View):
+    def get(self, request, pending_lecture_id):
+
+        if not PendingLecture.objects.filter(id=pending_lecture_id).exists():
+            return JsonResponse({'message':'DOES_NOT_EXIST'},status=404)
+
+        lecture = PendingLecture.objects.filter(id=pending_lecture_id).select_related('sub_category', 'difficulty', 'user').prefetch_related('introduction_set','hashtags').first()
+
+        images_results = [{
+            "id"        : image.id,
+            "image_url" : image.image_url,
+            "detail"    : image.detail
+        } for image in lecture.introduction_set.all()]
+        first_tags = [
+            "by."+lecture.user.username,
+            lecture.sub_category.name, 
+            lecture.detailed_category,
+            lecture.difficulty.level
+        ]
+        second_tags = [tag.tag for tag in lecture.hashtags.all()]
+        images_results[0]['tags'] = first_tags
+        images_results[1]['tags'] = second_tags
+        pending_lecture = {
+            'lecture_id' : lecture.id,
+            'title'      : lecture.title,
+            'images'     : images_results
+        }
+        
+        return JsonResponse({'pending_lecture' : pending_lecture}, status=200)
+        
 class PendingLectureListView(View):
     def get(self,request):
 
