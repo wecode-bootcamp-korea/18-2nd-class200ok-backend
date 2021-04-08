@@ -29,12 +29,14 @@ class BasicInformationView(View):
                         sub_category_id = sub_category_id,
                         detailed_category = detailed_category,
                         difficulty_id = difficulty_id,
+                        use_id = user
                     )
             else:
                 PendingLecture.objects.filter(user=request.user).update(                                                
                         sub_category_id = sub_category_id,
                         detailed_category = detailed_category,
                         difficulty_id = difficulty_id,
+                        use_id = user                        
                     )         
             return JsonResponse({'message' : 'SUCCESS'}, status=201)
 
