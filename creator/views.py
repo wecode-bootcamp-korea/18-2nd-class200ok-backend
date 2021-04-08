@@ -78,7 +78,6 @@ class ClassIntroductionView(View):
             user = request.user
             pending_lecture = PendingLecture.objects.get(user=user)
             file_objs = request.FILES.getlist('introduction_image')
-            details = request.POST.getlist('detail')
 
             for i in range(len(file_objs)):
                 file_name = file_objs[i].name
@@ -87,8 +86,7 @@ class ClassIntroductionView(View):
                 media_storage = MediaStorage()
                 media_storage.save(file_path_within_bucket, file_objs[i])
                 file_url = media_storage.url(file_path_within_bucket)
-                Introduction.objects.create(detail=details[i], image_url=file_url, pending_lecture=pending_lecture)
-                print(file_name)
+                Introduction.objects.create(image_url=file_url, pending_lecture=pending_lecture)
             return JsonResponse({'result' : 'Introduction image(s) and detail(s) uploaded'}, status=201)
         
         except AttributeError:
